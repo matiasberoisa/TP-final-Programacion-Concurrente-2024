@@ -5,7 +5,7 @@ import java.util.Random;
 import Clase.Parque;
 
 public class Visitante implements Runnable {
-    private int numVisitante;
+    private String numVisitante;
     private Parque elParque;
 
     public void run() {
@@ -33,11 +33,27 @@ public class Visitante implements Runnable {
                     case 3: // comedor
                         if (contadorAtracciones[2] == 0) {
                             contadorAtracciones[2]++;
+                            System.out.println("el visitante N° " + numVisitante + "se dirige al comedor");
+                            boolean mesaDisponible = elParque.esperarMesaDisponible();
+                            if (mesaDisponible) {
+                                System.out.println("el visitante N° " + numVisitante + "encuentra una mesa disponible");
+                                int mesa = elParque.buscarMesa();
+                                System.out.println("el visitante N° " + numVisitante + "se sienta en la mesa " + mesa);
+                                Thread.sleep(unRandom.nextInt(3, 8) * 1000);
+                                System.out.println("el visitante N° " + numVisitante + "deja la mesa " + mesa);
+                                elParque.dejarMesa(mesa);
+                            } else {
+                                System.out
+                                        .println("el visitante N° " + numVisitante + "no encontro mesa y decide irse");
+                            }
                         }
                         break;
                     case 4: // tren
                         if (contadorAtracciones[3] == 0) {
                             contadorAtracciones[3]++;
+                            elParque.hacerFilaDelTren(numVisitante);
+                            Thread.sleep(5000);
+                            System.out.println("el visitante N° " + numVisitante + "se baja del tren");
                         }
                         break;
                     case 5: // espectaculo

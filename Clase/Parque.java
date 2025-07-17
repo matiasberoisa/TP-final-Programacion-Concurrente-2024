@@ -12,7 +12,7 @@ public class Parque {
     private Boolean abierto = false;
 
     public Parque() {
-        elComedor = new Comedor();
+        elComedor = new Comedor(2);
         elEspectaculo = new Espectaculo();
         elAutito = new AutitoChocador(0);
         losJuegosDePremio = new JuegosDePremio();
@@ -26,6 +26,10 @@ public class Parque {
 
     public void cerrarParque() {
         abierto = false;
+    }
+
+    public boolean ParqueAbierto() {
+        return abierto;
     }
 
     public void subirAutitoChocador() {
@@ -54,5 +58,57 @@ public class Parque {
 
     public void esperarEquipo() {
         realidadVirtual.esperarEquipo();
+    }
+
+    // metodos del comedor
+
+    public boolean esperarMesaDisponible() {
+        boolean entroComedor = false;
+        try {
+            entroComedor = elComedor.buscarMesa();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return entroComedor;
+    }
+
+    public int buscarMesa() {
+        return elComedor.encontrarMesa();
+    }
+
+    public void dejarMesa(int mesaUsada) {
+        elComedor.dejarMesa(mesaUsada);
+    }
+
+    public void hacerFilaDelTren(String nombre) {
+        try {
+            elTren.hacerFila(nombre);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void habilitarTren() {
+        elTren.dejarSubir();
+    }
+
+    public void entrarEspectaculo() {
+        elEspectaculo.ingresarEspectaculo();
+    }
+
+    public void hacerFilaEspectaculo() {
+        elEspectaculo.hacerFila();
+    }
+
+    public void sentarse() {
+        elEspectaculo.sentarse();
+    }
+
+    public void salirEspectaculo() {
+        elEspectaculo.salirEspectaculo();
+    }
+
+    public void iniciarNuevoShow() {
+        elEspectaculo.terminarShow();
     }
 }
