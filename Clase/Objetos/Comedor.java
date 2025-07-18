@@ -7,6 +7,7 @@ public class Comedor {
     private Mesa[] mesas;
     private int capacidadMax;
     private int capacidadActual;
+    private boolean abierto = true;
 
     public Comedor(int cantidad) {
         cantMesas = cantidad;
@@ -15,6 +16,14 @@ public class Comedor {
         for (int i = 0; i < mesas.length; i++) {
             mesas[i] = new Mesa();
         }
+    }
+
+    public boolean atraccionAbierta() {
+        return abierto;
+    }
+
+    public void cerrar() {
+        abierto = false;
     }
 
     public synchronized boolean buscarMesa() throws InterruptedException {

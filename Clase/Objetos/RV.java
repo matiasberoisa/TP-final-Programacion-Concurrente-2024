@@ -8,6 +8,7 @@ public class RV {
     private Semaphore semaforoVisor;
     private Semaphore mutex;
     private Semaphore semaforoEncargado;
+    private boolean abierto = true;
 
     public RV(int base, int manopla, int visor) {
         mutex = new Semaphore(1);
@@ -15,6 +16,14 @@ public class RV {
         semaforoManopla = new Semaphore(manopla);
         semaforoVisor = new Semaphore(visor);
         semaforoEncargado = new Semaphore(0);
+    }
+
+    public boolean atraccionAbierta() {
+        return abierto;
+    }
+
+    public void cerrar() {
+        abierto = false;
     }
 
     public void tomarEquipo() {

@@ -10,6 +10,7 @@ public class Parque {
     private RV realidadVirtual; // semaforos genericos
     private Tren elTren; // blocking queue
     private Boolean abierto = false;
+    private int tiempoActual = 0;
 
     public Parque() {
         elComedor = new Comedor(2);
@@ -18,6 +19,15 @@ public class Parque {
         losJuegosDePremio = new JuegosDePremio();
         realidadVirtual = new RV(0, 0, 0);
         elTren = new Tren();
+    }
+
+    public void cerrarActividades() {
+        elComedor.cerrar();
+        elEspectaculo.cerrar();
+        elAutito.cerrar();
+        losJuegosDePremio.cerrar();
+        realidadVirtual.cerrar();
+        elTren.cerrar();
     }
 
     public void abrirParque() {
@@ -110,5 +120,13 @@ public class Parque {
 
     public void iniciarNuevoShow() {
         elEspectaculo.terminarShow();
+    }
+
+    public void registrarTiempo(int ti) {
+        tiempoActual = ti;
+    }
+
+    public int tiempoActual() {
+        return tiempoActual;
     }
 }

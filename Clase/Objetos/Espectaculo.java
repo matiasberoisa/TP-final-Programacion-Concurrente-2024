@@ -6,6 +6,7 @@ public class Espectaculo {
     private int capacidad, tamaño, tamañoGrupo, tamañoEspera, tamañoActual;
     private Lock lock;
     private Condition grupoEntrada, grupoSalida, grupoEspera;
+    private boolean abierto = true;
 
     public Espectaculo() {
         capacidad = 20;
@@ -17,6 +18,14 @@ public class Espectaculo {
         grupoEntrada = lock.newCondition();
         grupoSalida = lock.newCondition();
         grupoEspera = lock.newCondition();
+    }
+
+    public boolean atraccionAbierta() {
+        return abierto;
+    }
+
+    public void cerrar() {
+        abierto = false;
     }
 
     public void hacerFila() {
