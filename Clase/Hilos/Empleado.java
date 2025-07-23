@@ -47,7 +47,9 @@ public class Empleado implements Runnable {
 
     public void cerrarParque() {
         int horas = 9;
+        System.out.println("se abre el parque");
         while (horas < 23) {
+            System.out.println("son las " + horas + ":00");
             try {
                 Thread.sleep(10000);
             } catch (InterruptedException e) {
