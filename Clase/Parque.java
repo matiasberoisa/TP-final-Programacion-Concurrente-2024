@@ -1,5 +1,7 @@
 package Clase;
 
+import java.util.Random;
+
 import Clase.Objetos.*;
 
 public class Parque {
@@ -7,17 +9,18 @@ public class Parque {
     private Espectaculo elEspectaculo; // locks con condiciones
     private AutitoChocador elAutito; // monitores
     private JuegosDePremio losJuegosDePremio; // exchanger
-    private RV realidadVirtual; // semaforos genericos
+    private RV realidadVirtual; // semaforos genericos X
     private Tren elTren; // blocking queue
     private Boolean abierto = false;
     private int tiempoActual = 0;
+    private Random unRandom = new Random();
 
     public Parque() {
-        elComedor = new Comedor(2);
+        elComedor = new Comedor(1);
         elEspectaculo = new Espectaculo();
-        elAutito = new AutitoChocador(0);
+        elAutito = new AutitoChocador(2);
         losJuegosDePremio = new JuegosDePremio();
-        realidadVirtual = new RV(0, 0, 0);
+        realidadVirtual = new RV(unRandom.nextInt(2, 5), unRandom.nextInt(2, 5) * 2, unRandom.nextInt(2, 5));
         elTren = new Tren();
     }
 
@@ -54,12 +57,14 @@ public class Parque {
         elAutito.bajarse();
     }
 
+    // metodos de realidad virtual
+
     public void entrarRealidadVirtual() {
         realidadVirtual.tomarEquipo();
     }
 
     public void salirRealidadVirtual() {
-        realidadVirtual.darEquipo();
+        realidadVirtual.devolverEquipo();
     }
 
     public void darEquipo() {
@@ -86,9 +91,15 @@ public class Parque {
         return elComedor.encontrarMesa();
     }
 
+    public void usarMesa(int i) {
+        elComedor.usarMesa(i);
+    }
+
     public void dejarMesa(int mesaUsada) {
         elComedor.dejarMesa(mesaUsada);
     }
+
+    // metodos del tren
 
     public void hacerFilaDelTren(String nombre) {
         try {

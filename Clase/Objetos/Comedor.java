@@ -3,16 +3,15 @@ package Clase.Objetos;
 import java.util.Random;
 
 public class Comedor {
-    private int cantMesas;
     private Mesa[] mesas;
     private int capacidadMax;
     private int capacidadActual;
     private boolean abierto = true;
 
     public Comedor(int cantidad) {
-        cantMesas = cantidad;
         capacidadMax = cantidad * 4;
-        mesas = new Mesa[cantMesas];
+        capacidadActual = 0;
+        mesas = new Mesa[cantidad];
         for (int i = 0; i < mesas.length; i++) {
             mesas[i] = new Mesa();
         }
@@ -30,33 +29,42 @@ public class Comedor {
         Random random = new Random();
         boolean disponible = false, decideEsperar = random.nextBoolean(), entro = false;
         int contador = 0;
-        if (capacidadActual < capacidadMax && decideEsperar) {
-            while (!disponible) {
+        capacidadActual++;
+        if (capacidadActual <= capacidadMax) {
+            while (!disponible && contador < mesas.length) {
                 if (mesas[contador].mesaDisponible()) {
                     disponible = true;
+                    entro = true;
                 } else {
                     contador++;
                 }
             }
-            if (disponible && decideEsperar) {
-                wait();
-                entro = true;
-            }
+        }
+        if (disponible && decideEsperar) {
+            wait();
+            entro = true;
         }
         return entro;
     }
 
     public synchronized int encontrarMesa() {
         int contador = 0;
-        while (mesas[contador].mesaDisponible()) {
-            contador++;
+        boolean mesaDisponible = false;
+        while (!mesaDisponible) {
+            if (mesas[contador].mesaDisponible()) {
+                mesaDisponible = true;
+            } else {
+                contador++;
+            }
         }
-        mesas[contador].entrarMesa();
-        capacidadActual++;
         return contador;
     }
 
-    public void dejarMesa(int i) {
+    public synchronized void usarMesa(int i) {
+        mesas[i].entrarMesa();
+    }
+
+    public synchronized void dejarMesa(int i) {
         mesas[i].dejarMesa();
         capacidadActual--;
         notify();

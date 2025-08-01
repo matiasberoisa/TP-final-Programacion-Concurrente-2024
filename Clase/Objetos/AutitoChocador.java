@@ -2,15 +2,13 @@ package Clase.Objetos;
 
 public class AutitoChocador {
     private int limite;
-    private int cantidadAuto;
     private int cantidad;
     private boolean puedeSubir = true;
     private boolean abierto = true;
 
-    public AutitoChocador(int cantidad) {
-        cantidadAuto = cantidad;
-        limite = cantidad * 2;
-        cantidad = 1;
+    public AutitoChocador(int cant) {
+        limite = cant * 2;
+        cantidad = 0;
     }
 
     public boolean atraccionAbierta() {
@@ -35,8 +33,8 @@ public class AutitoChocador {
     }
 
     public synchronized void bajarse() {
-        cantidadAuto--;
-        if (cantidadAuto == 1) {
+        cantidad--;
+        if (cantidad == 0) {
             puedeSubir = true;
         }
     }
