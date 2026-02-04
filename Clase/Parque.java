@@ -45,6 +45,8 @@ public class Parque {
         return abierto;
     }
 
+    // metodos de autito chocador
+
     public void subirAutitoChocador() {
         try {
             elAutito.subirse();
@@ -53,7 +55,7 @@ public class Parque {
         }
     }
 
-    public void bajarAutitoChocador() {
+    public void bajarAutitoChocador() throws InterruptedException {
         elAutito.bajarse();
     }
 
@@ -113,6 +115,12 @@ public class Parque {
         elTren.dejarSubir();
     }
 
+    public int cantidadVisitantesAdentro() {
+        return elTren.cantidadVisitantesAdentro();
+    }
+
+    // metodos del espectaculo
+
     public void entrarEspectaculo() {
         elEspectaculo.ingresarEspectaculo();
     }
@@ -132,6 +140,8 @@ public class Parque {
     public void iniciarNuevoShow() {
         elEspectaculo.terminarShow();
     }
+
+    // metodos del tiempo
 
     public void registrarTiempo(int ti) {
         tiempoActual = ti;

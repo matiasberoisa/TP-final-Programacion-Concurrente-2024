@@ -1,12 +1,13 @@
 package Clase.Hilos;
 
-import Clase.Objetos.Tren;
+import Clase.Parque;
 
 public class Conductor implements Runnable {
-    private Tren elTren;
+    private Parque elParque;
 
-    public Conductor(Tren t) {
-        elTren = t;
+    public Conductor(Parque elP) {
+        elParque = elP;
+
     }
 
     public void run() {
@@ -14,10 +15,10 @@ public class Conductor implements Runnable {
         while (true) {
             for (int i = 0; i < 10; i++) {
                 System.out.println("el conductor habilita el tren para subir");
-                elTren.dejarSubir();
+                elParque.habilitarTren();
             }
             while (minutos < 5 || visitantesAdentro > 0) {
-                visitantesAdentro = elTren.cantidadVisitantesAdentro();
+                visitantesAdentro = elParque.cantidadVisitantesAdentro();
                 minutos++;
                 try {
                     Thread.sleep(1000);

@@ -6,7 +6,7 @@ import Clase.Hilos.*;
 public class Main {
     public static void main(String[] args) {
         Parque elParque = new Parque();
-        for (int j = 1; j < 11; j++) {
+        for (int j = 1; j <= 6; j++) {
             Visitante unVisitante = new Visitante("" + j, elParque);
             Thread hiloVisitante = new Thread(unVisitante);
             hiloVisitante.start();

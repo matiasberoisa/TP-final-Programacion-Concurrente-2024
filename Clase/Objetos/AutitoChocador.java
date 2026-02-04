@@ -20,22 +20,35 @@ public class AutitoChocador {
     }
 
     public synchronized void subirse() throws InterruptedException {
-        if (puedeSubir) {
-            cantidad++;
-            if (cantidad == limite) {
-                puedeSubir = false;
-                notifyAll();
-            }
-            while (cantidad <= limite) {
+
+        while (!puedeSubir) {
+            wait();
+        }
+
+        cantidad++;
+        System.out.println("suben: " + cantidad);
+
+        if (cantidad == limite) {
+            puedeSubir = false;
+            notifyAll();
+        } else {
+            while (cantidad < limite) {
                 wait();
             }
         }
     }
 
-    public synchronized void bajarse() {
+    public synchronized void bajarse() throws InterruptedException {
         cantidad--;
+        System.out.println("bajan: " + cantidad);
+
         if (cantidad == 0) {
             puedeSubir = true;
+            notifyAll();
+        } else {
+            while (cantidad > 0) {
+                wait();
+            }
         }
     }
 }
