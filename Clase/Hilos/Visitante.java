@@ -21,7 +21,7 @@ public class Visitante implements Runnable {
         try {
             while (elParque.tiempoActual() < 19) {// verificar condicion de tiempo
                 // numeroAtraccion = unRandom.nextInt(1, 6);
-                numeroAtraccion = 3;
+                numeroAtraccion = 4;
                 switch (numeroAtraccion) {
                     case 1: // autito chocador
                         elParque.subirAutitoChocador();
@@ -35,7 +35,7 @@ public class Visitante implements Runnable {
                     case 2: // area de juegos de premio
 
                         break;
-                    case 3: // comedor
+                    case 3: // comedor X
                         System.out.println("el visitante N° " + numVisitante + " se dirige al comedor");
                         Thread.sleep(2000);
                         boolean mesaDisponible = elParque.esperarMesaDisponible(numVisitante); // comedor.buscarMesa()
@@ -54,7 +54,7 @@ public class Visitante implements Runnable {
                         }
 
                         break;
-                    case 4: // tren
+                    case 4: // tren X
                         elParque.hacerFilaDelTren(numVisitante);
                         Thread.sleep(5000);
                         System.out.println("el visitante N° " + numVisitante + " se baja del tren");

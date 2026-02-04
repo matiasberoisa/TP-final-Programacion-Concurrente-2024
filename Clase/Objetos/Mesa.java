@@ -47,7 +47,7 @@ public class Mesa {
             synchronized (this) {
                 mesaDisponible = true;
             }
-        } catch (Exception e) {
+        } catch (InterruptedException | BrokenBarrierException e) {
             e.printStackTrace();
         }
     }
