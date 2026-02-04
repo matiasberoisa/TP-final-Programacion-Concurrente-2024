@@ -50,7 +50,7 @@ public class Comedor {
         return entro;
     }
 
-    public int encontrarMesa() {
+    public synchronized int encontrarMesa() {
         int contador = 0;
         boolean mesaDisponible = false;
         while (!mesaDisponible) {
@@ -70,7 +70,9 @@ public class Comedor {
     public void dejarMesa(int i) {
         capacidadActual--;
         mesas[i].dejarMesa();
-        notifyAll();
+        synchronized (this) {
+            this.notifyAll();
+        }
     }
 
 }

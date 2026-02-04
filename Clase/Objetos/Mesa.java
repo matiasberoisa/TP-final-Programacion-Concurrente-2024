@@ -10,8 +10,14 @@ public class Mesa {
     private boolean abierto = true;
 
     public Mesa() {
-        barreraEntrar = new CyclicBarrier(4);
-        barreraSalir = new CyclicBarrier(4);
+        barreraEntrar = new CyclicBarrier(4, () -> {
+            // Este código se ejecuta cuando todos los hilos llegan a la barrera
+            System.out.println("se sientan todos en la mesa");
+        });
+        barreraSalir = new CyclicBarrier(4, () -> {
+            // Este código se ejecuta cuando todos los hilos llegan a la barrera
+            System.out.println("se levantan todos en la mesa");
+        });
         mesaDisponible = true;
     }
 
@@ -26,7 +32,9 @@ public class Mesa {
     public void entrarMesa() {
         try {
             barreraEntrar.await();
-            mesaDisponible = false;
+            synchronized (this) {
+                mesaDisponible = false;
+            }
         } catch (InterruptedException | BrokenBarrierException e) {
             e.printStackTrace();
         }
@@ -36,13 +44,15 @@ public class Mesa {
     public void dejarMesa() {
         try {
             barreraSalir.await();
-            mesaDisponible = true;
-        } catch (InterruptedException | BrokenBarrierException e) {
+            synchronized (this) {
+                mesaDisponible = true;
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public boolean mesaDisponible() {
+    public synchronized boolean mesaDisponible() {
         return this.mesaDisponible;
     }
 }

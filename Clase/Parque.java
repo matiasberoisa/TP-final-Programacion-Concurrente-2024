@@ -16,7 +16,7 @@ public class Parque {
     private Random unRandom = new Random();
 
     public Parque() {
-        elComedor = new Comedor(1);
+        elComedor = new Comedor(2);
         elEspectaculo = new Espectaculo();
         elAutito = new AutitoChocador(2);
         losJuegosDePremio = new JuegosDePremio();

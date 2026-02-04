@@ -44,7 +44,7 @@ public class Visitante implements Runnable {
                             int mesa = elParque.buscarMesa(); // comedor.encontrarMesa()
                             elParque.usarMesa(mesa);
                             System.out.println("el visitante N° " + numVisitante + " se sienta en la mesa " + mesa);
-                            Thread.sleep(unRandom.nextInt(3, 4) * 1000);
+                            Thread.sleep(unRandom.nextInt(3, 8) * 1000);
                             elParque.dejarMesa(mesa);
                             System.out.println("el visitante N° " + numVisitante + " deja la mesa " + mesa);
                         } else {
