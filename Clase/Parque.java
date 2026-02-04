@@ -77,10 +77,10 @@ public class Parque {
 
     // metodos del comedor
 
-    public boolean esperarMesaDisponible() {
+    public boolean esperarMesaDisponible(String numVisitante) {
         boolean entroComedor = false;
         try {
-            entroComedor = elComedor.buscarMesa();
+            elComedor.buscarMesa(numVisitante);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

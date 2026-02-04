@@ -25,7 +25,6 @@ public class Mesa {
 
     public void entrarMesa() {
         try {
-            System.out.println(1);
             barreraEntrar.await();
             mesaDisponible = false;
         } catch (InterruptedException | BrokenBarrierException e) {

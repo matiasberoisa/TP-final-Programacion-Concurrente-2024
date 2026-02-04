@@ -25,12 +25,12 @@ public class Comedor {
         abierto = false;
     }
 
-    public synchronized boolean buscarMesa() throws InterruptedException {
+    public synchronized boolean buscarMesa(String numVisitante) throws InterruptedException {
         Random random = new Random();
         boolean disponible = false, decideEsperar = random.nextBoolean(), entro = false;
         int contador = 0;
-        capacidadActual++;
-        if (capacidadActual <= capacidadMax) {
+        if (capacidadActual < capacidadMax) {
+            capacidadActual++;
             while (!disponible && contador < mesas.length) {
                 if (mesas[contador].mesaDisponible()) {
                     disponible = true;
@@ -40,14 +40,17 @@ public class Comedor {
                 }
             }
         }
-        if (disponible && decideEsperar) {
-            wait();
+        if (!disponible && decideEsperar) {
+            while (!disponible) {
+                System.out.println("el visitante " + numVisitante + " decide esperar");
+                wait();
+            }
             entro = true;
         }
         return entro;
     }
 
-    public synchronized int encontrarMesa() {
+    public int encontrarMesa() {
         int contador = 0;
         boolean mesaDisponible = false;
         while (!mesaDisponible) {
@@ -60,14 +63,14 @@ public class Comedor {
         return contador;
     }
 
-    public synchronized void usarMesa(int i) {
+    public void usarMesa(int i) {
         mesas[i].entrarMesa();
     }
 
-    public synchronized void dejarMesa(int i) {
-        mesas[i].dejarMesa();
+    public void dejarMesa(int i) {
         capacidadActual--;
-        notify();
+        mesas[i].dejarMesa();
+        notifyAll();
     }
 
 }
