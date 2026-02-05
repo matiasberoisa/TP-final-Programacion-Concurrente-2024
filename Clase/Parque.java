@@ -122,25 +122,16 @@ public class Parque {
     // metodos del espectaculo
 
     public void entrarEspectaculo() {
-        elEspectaculo.ingresarEspectaculo();
-    }
 
-    public void hacerFilaEspectaculo() {
-        elEspectaculo.hacerFila();
     }
 
     public void sentarse() {
-        elEspectaculo.sentarse();
+
     }
 
     public void salirEspectaculo() {
-        elEspectaculo.salirEspectaculo();
-    }
 
-    public void iniciarNuevoShow() {
-        elEspectaculo.terminarShow();
     }
-
     // metodos del tiempo
 
     public void registrarTiempo(int ti) {
