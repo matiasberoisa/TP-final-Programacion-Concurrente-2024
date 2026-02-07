@@ -61,7 +61,7 @@ public class Visitante implements Runnable {
                         System.out.println("el visitante N° " + numVisitante + " se baja del tren");
 
                         break;
-                    case 5: // espectaculo
+                    case 5: // espectaculo X
                         boolean entraUltimo = elParque.entrarEspectaculo();
                         if (entraUltimo) {
                             System.out.println(
