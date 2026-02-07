@@ -62,11 +62,27 @@ public class Visitante implements Runnable {
 
                         break;
                     case 5: // espectaculo
-                        elParque.entrarEspectaculo();
-                        System.out.println("el visitante N° " + numVisitante + " entra al espectaculo");
+                        boolean entraUltimo = elParque.entrarEspectaculo();
+                        if (entraUltimo) {
+                            System.out.println(
+                                    "el visitante N° " + numVisitante
+                                            + " fue el ultimo del grupo, habilita al resto a entrar");
+                            Thread.sleep(3000);
+                            elParque.habilitarEntrada();
+                        } else {
+                            System.out.println("el visitante N° " + numVisitante + " entra al espectaculo");
+                        }
+                        boolean saleUltimo = elParque.sentarse();
                         Thread.sleep(3000);
-                        elParque.sentarse();
-                        System.out.println("el visitante N° " + numVisitante + " se sienta");
+                        if (saleUltimo) {
+                            System.out.println(
+                                    "el visitante N° " + numVisitante
+                                            + " fue el ultimo en salir, habilita al resto a entrar");
+                            Thread.sleep(3000);
+                            elParque.habilitarSalida();
+                        } else {
+                            System.out.println("el visitante N° " + numVisitante + " sale al espectaculo");
+                        }
                         break;
                     case 6: // realidad virtual X
                         System.out.println("el visitante N° " + numVisitante + " quiere entrar a la RV");

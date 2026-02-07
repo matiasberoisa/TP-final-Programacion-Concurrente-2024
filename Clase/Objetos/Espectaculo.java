@@ -3,24 +3,20 @@ package Clase.Objetos;
 import java.util.concurrent.locks.*;
 
 public class Espectaculo {
-    private int capacidad, tamaño, tamañoGrupo, limiteGrupo, tamañoActual;
+    private int capacidad, tamañoGrupo, tamaño, limiteGrupo, tamañoActual;
     private Lock lock;
-    private Condition grupoEntrada, grupoSalida, grupo1, grupo2, grupo3, grupo4;
-    private boolean abierto = true;
+    private Condition grupoEntrada, grupoSalida, grupo;
+    private boolean abierto = true, showEnCurso = false;
 
     public Espectaculo() {
-        capacidad = 10;
-        tamaño = 0;
+        capacidad = 20;
         tamañoGrupo = 0;
         limiteGrupo = 5;
         tamañoActual = 0;
         lock = new ReentrantLock();
         grupoEntrada = lock.newCondition();
         grupoSalida = lock.newCondition();
-        grupo1 = lock.newCondition();
-        grupo2 = lock.newCondition();
-        grupo3 = lock.newCondition();
-        grupo4 = lock.newCondition();
+        grupo = lock.newCondition();
     }
 
     public boolean atraccionAbierta() {
@@ -31,73 +27,81 @@ public class Espectaculo {
         abierto = false;
     }
 
-    public void entrarEspectaculo() {
+    public boolean entrarEspectaculo() {
+        boolean entro = false, ultimo = false;
         try {
-            boolean entro = false;
-            tamaño++;
-            while (tamaño > capacidad) {
-                grupoEntrada.await();
-            }
-            tamaño--;
-            tamañoGrupo++;
+            lock.lock();
             while (!entro) {
-                while (tamañoGrupo < limiteGrupo) {
-                    grupo1.await();
+                tamaño++;
+                if ((tamaño > capacidad) || showEnCurso) {
+                    while ((tamaño > capacidad) || showEnCurso) {
+                        grupoEntrada.await();
+                    }
+                } else {
+                    tamañoGrupo++;
+                    if (tamañoGrupo <= limiteGrupo) {
+                        entro = true;
+                        if (tamañoGrupo == limiteGrupo) {
+                            ultimo = true;
+                            grupo.signalAll();
+                        }
+                        while (tamañoGrupo < limiteGrupo) {
+                            grupo.await();
+                        }
+                    }
+
                 }
-                while (tamañoGrupo < limiteGrupo + 5) {
-                    grupo2.await();
-                }
-                while (tamañoGrupo < limiteGrupo + 10) {
-                    grupo3.await();
-                }
-                while (tamañoGrupo < limiteGrupo + 15) {
-                    grupo4.await();
-                }
-                entro = true;
             }
-            tamañoGrupo--;
         } catch (Exception e) {
 
         } finally {
             lock.unlock();
         }
-
+        return ultimo;
     }
 
-    public void habilitarGrupo(int grupo) {
-        switch (grupo) {
-            case 1:
-                grupo1.signalAll();
-                break;
-            case 2:
-                grupo2.signalAll();
-                break;
-            case 3:
-                grupo3.signalAll();
-                break;
-            case 4:
-                grupo4.signalAll();
-                break;
-        }
-    }
-
-    public void sentarse() {
+    public boolean sentarse() {
+        boolean ultimo = false;
         try {
             lock.lock();
             tamañoActual++;
-            while (tamañoActual < capacidad) {
-                grupoSalida.await();
+            if (tamañoActual < capacidad) {
+                while (tamañoActual < capacidad) {
+                    grupoSalida.await();
+                }
+            } else {
+                showEnCurso = true;
+                if (tamañoActual == capacidad) {
+                    System.out.println("/////EMPIEZA LA FUNCION/////");
+                    ultimo = true;
+                    grupoSalida.signalAll();
+                }
             }
-            tamañoActual--;
         } catch (Exception e) {
 
         } finally {
             lock.unlock();
         }
+        return ultimo;
     }
 
-    public void terminarShow() {
-        grupoSalida.signalAll();
+    public void habilitarEntrada() {
+        lock.lock();
+        tamañoGrupo = 0;
+        tamaño = 0;
         grupoEntrada.signalAll();
+        lock.unlock();
     }
+
+    public void habilitarSalida() {
+        lock.lock();
+        tamañoGrupo = 0;
+        tamaño = 0;
+        tamañoActual = 0;
+        showEnCurso = false;
+        grupoEntrada.signalAll();
+        System.out.println("/////INICIA NUEVO SHOW/////");
+        lock.unlock();
+    }
+
 }

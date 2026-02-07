@@ -12,9 +12,10 @@ public class Main {
             hiloVisitante.start();
         }
         /*
-         * Empleado unEmpleado = new Empleado(0, elParque, "realidadVirtual");
+         * Empleado unEmpleado = new Empleado(0, elParque, "espectaculo");
          * Thread hiloEmpleado = new Thread(unEmpleado);
          * hiloEmpleado.start();
          */
+
     }
 }

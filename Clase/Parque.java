@@ -121,17 +121,22 @@ public class Parque {
 
     // metodos del espectaculo
 
-    public void entrarEspectaculo() {
-
+    public boolean entrarEspectaculo() {
+        return elEspectaculo.entrarEspectaculo();
     }
 
-    public void sentarse() {
-
+    public boolean sentarse() {
+        return elEspectaculo.sentarse();
     }
 
-    public void salirEspectaculo() {
-
+    public void habilitarSalida() {
+        elEspectaculo.habilitarSalida();
     }
+
+    public void habilitarEntrada() {
+        elEspectaculo.habilitarEntrada();
+    }
+
     // metodos del tiempo
 
     public void registrarTiempo(int ti) {
