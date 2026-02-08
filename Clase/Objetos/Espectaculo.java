@@ -5,7 +5,7 @@ import java.util.concurrent.locks.*;
 public class Espectaculo {
     private int capacidad, tamañoGrupo, tamaño, limiteGrupo, tamañoActual;
     private Lock lock;
-    private Condition grupoEntrada, grupoSalida, grupo;
+    private Condition grupoEspera, grupoSalida, grupoEntrada;
     private boolean abierto = true, showEnCurso = false;
 
     public Espectaculo() {
@@ -14,9 +14,9 @@ public class Espectaculo {
         limiteGrupo = 5;
         tamañoActual = 0;
         lock = new ReentrantLock();
-        grupoEntrada = lock.newCondition();
+        grupoEspera = lock.newCondition();
         grupoSalida = lock.newCondition();
-        grupo = lock.newCondition();
+        grupoEntrada = lock.newCondition();
     }
 
     public boolean atraccionAbierta() {
@@ -35,7 +35,7 @@ public class Espectaculo {
                 tamaño++;
                 if ((tamaño > capacidad) || showEnCurso) {
                     while ((tamaño > capacidad) || showEnCurso) {
-                        grupoEntrada.await();
+                        grupoEspera.await();
                     }
                 } else {
                     tamañoGrupo++;
@@ -43,10 +43,10 @@ public class Espectaculo {
                         entro = true;
                         if (tamañoGrupo == limiteGrupo) {
                             ultimo = true;
-                            grupo.signalAll();
+                            grupoEntrada.signalAll();
                         }
                         while (tamañoGrupo < limiteGrupo) {
-                            grupo.await();
+                            grupoEntrada.await();
                         }
                     }
 
@@ -89,7 +89,7 @@ public class Espectaculo {
         lock.lock();
         tamañoGrupo = 0;
         tamaño = 0;
-        grupoEntrada.signalAll();
+        grupoEspera.signalAll();
         lock.unlock();
     }
 
@@ -99,7 +99,7 @@ public class Espectaculo {
         tamaño = 0;
         tamañoActual = 0;
         showEnCurso = false;
-        grupoEntrada.signalAll();
+        grupoEspera.signalAll();
         System.out.println("/////INICIA NUEVO SHOW/////");
         lock.unlock();
     }

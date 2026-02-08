@@ -11,13 +11,13 @@ public class Main {
             Thread hiloVisitante = new Thread(unVisitante);
             hiloVisitante.start();
         }
+        Conductor unEmpleado = new Conductor(elParque);
+        Thread hiloEmpleado = new Thread(unEmpleado);
+        hiloEmpleado.start();
         /*
          * Empleado unEmpleado = new Empleado(0, elParque, "espectaculo");
          * Thread hiloEmpleado = new Thread(unEmpleado);
          * hiloEmpleado.start();
          */
-        Conductor unEmpleado = new Conductor(elParque);
-        Thread hiloEmpleado = new Thread(unEmpleado);
-        hiloEmpleado.start();
     }
 }

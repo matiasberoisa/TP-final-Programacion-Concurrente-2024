@@ -42,6 +42,7 @@ public class Empleado implements Runnable {
             if (tipoTrabajo.equals("manejadorTiempo")) {
                 System.out.println("el empleado abre el parque");
                 cerrarParque();
+                System.out.println("el empleado cierra el parque");
             }
         } catch (Exception e) {
         }
@@ -50,7 +51,7 @@ public class Empleado implements Runnable {
     public void cerrarParque() {
         int horas = 9;
         System.out.println("se abre el parque");
-        while (horas < 23) {
+        while (horas <= 23) {
             System.out.println("son las " + horas + ":00");
             elParque.registrarTiempo(horas);
             if (horas == 18) {
@@ -62,12 +63,13 @@ public class Empleado implements Runnable {
                 System.out.println("los juegos han cerrado");
             }
             try {
-                Thread.sleep(2000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             horas++;
         }
+
     }
 
 }
