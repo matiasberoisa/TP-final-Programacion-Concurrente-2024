@@ -69,7 +69,7 @@ public class Visitante implements Runnable {
                         }
 
                         break;
-                    case 4: // tren X
+                    case 4: // tren
                         elParque.hacerFilaDelTren(numVisitante);
                         Thread.sleep(5000);
                         System.out.println("el visitante N° " + numVisitante + " se baja del tren");
