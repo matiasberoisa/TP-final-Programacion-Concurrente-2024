@@ -16,22 +16,36 @@ public class Visitante implements Runnable {
     public void run() {
         Random unRandom = new Random();
         int numeroAtraccion;
-        boolean decideSalir = false;
+        boolean decideSalir = false, entraUltimo;
 
         try {
             while (elParque.tiempoActual() < 19) {// verificar condicion de tiempo
                 // numeroAtraccion = unRandom.nextInt(1, 6);
-                numeroAtraccion = 5;
+                numeroAtraccion = 4;
                 switch (numeroAtraccion) {
-                    case 1: // autito chocador
-                        elParque.subirAutitoChocador();
-                        System.out
-                                .println(
-                                        "el visitante N° " + numVisitante + " se sube al autito chocador");
-                        Thread.sleep(5000);
-                        System.out
-                                .println("el visitante N° " + numVisitante + " se baja de los autitos chocadores");
-                        elParque.bajarAutitoChocador();
+                    case 1: // autito chocador X
+                        entraUltimo = elParque.subirAutitoChocador();
+                        if (entraUltimo) {
+                            System.out.println(
+                                    "el visitante N° " + numVisitante
+                                            + " fue el ultimo del grupo, habilita al resto a entrar");
+                            System.out.println("/////INICIAN LOS AUTITOS/////");
+                            Thread.sleep(3000);
+                            System.out.println("/////TERMINAN LOS AUTITOS/////");
+                            System.out
+                                    .println("el visitante N° " + numVisitante + " habilita al resto a subir");
+                            Thread.sleep(2000);
+                            System.out.println("/////SUBIDA HABILITADA/////");
+                            elParque.habilitarSubida();
+                            elParque.bajarAutitoChocador();
+                        } else {
+                            System.out
+                                    .println(
+                                            "el visitante N° " + numVisitante + " se sube al autito chocador");
+                            Thread.sleep(5000);
+                            System.out
+                                    .println("el visitante N° " + numVisitante + " se baja de los autitos chocadores");
+                        }
                         break;
                     case 2: // area de juegos de premio
 
@@ -62,7 +76,7 @@ public class Visitante implements Runnable {
 
                         break;
                     case 5: // espectaculo X
-                        boolean entraUltimo = elParque.entrarEspectaculo();
+                        entraUltimo = elParque.entrarEspectaculo();
                         if (entraUltimo) {
                             System.out.println(
                                     "el visitante N° " + numVisitante

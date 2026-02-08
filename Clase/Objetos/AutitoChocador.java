@@ -1,10 +1,8 @@
 package Clase.Objetos;
 
 public class AutitoChocador {
-    private int limite;
-    private int cantidad;
-    private boolean puedeSubir = true;
-    private boolean abierto = true;
+    private int limite, cantidad;
+    private boolean puedeSubir = true, abierto = true;
 
     public AutitoChocador(int cant) {
         limite = cant * 2;
@@ -19,36 +17,38 @@ public class AutitoChocador {
         abierto = false;
     }
 
-    public synchronized void subirse() throws InterruptedException {
-
-        while (!puedeSubir) {
-            wait();
-        }
-
-        cantidad++;
-        System.out.println("suben: " + cantidad);
-
-        if (cantidad == limite) {
-            puedeSubir = false;
-            notifyAll();
-        } else {
-            while (cantidad < limite) {
-                wait();
+    public synchronized boolean subirse() throws InterruptedException {
+        boolean entro = false, ultimo = false;
+        while (!entro) {
+            cantidad++;
+            if ((cantidad > limite) || !puedeSubir) {
+                while ((cantidad > limite) || !puedeSubir) {
+                    wait();
+                }
+            } else {
+                if (cantidad <= limite) {
+                    entro = true;
+                    if (cantidad == limite) {
+                        puedeSubir = false;
+                        ultimo = true;
+                        notifyAll();
+                    } else {
+                        while (cantidad < limite) {
+                            wait();
+                        }
+                    }
+                }
             }
         }
+        return ultimo;
     }
 
     public synchronized void bajarse() throws InterruptedException {
-        cantidad--;
-        System.out.println("bajan: " + cantidad);
+        cantidad = 0;
+        notifyAll();
+    }
 
-        if (cantidad == 0) {
-            puedeSubir = true;
-            notifyAll();
-        } else {
-            while (cantidad > 0) {
-                wait();
-            }
-        }
+    public synchronized void habilitarSubida() {
+        puedeSubir = true;
     }
 }

@@ -18,7 +18,7 @@ public class Parque {
     public Parque() {
         elComedor = new Comedor(2);
         elEspectaculo = new Espectaculo();
-        elAutito = new AutitoChocador(2);
+        elAutito = new AutitoChocador(10);
         losJuegosDePremio = new JuegosDePremio();
         realidadVirtual = new RV(unRandom.nextInt(2, 5), unRandom.nextInt(2, 5) * 2, unRandom.nextInt(2, 5));
         elTren = new Tren();
@@ -47,16 +47,16 @@ public class Parque {
 
     // metodos de autito chocador
 
-    public void subirAutitoChocador() {
-        try {
-            elAutito.subirse();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public boolean subirAutitoChocador() throws InterruptedException {
+        return elAutito.subirse();
     }
 
     public void bajarAutitoChocador() throws InterruptedException {
         elAutito.bajarse();
+    }
+
+    public void habilitarSubida() {
+        elAutito.habilitarSubida();
     }
 
     // metodos de realidad virtual
