@@ -69,11 +69,16 @@ public class Visitante implements Runnable {
                         }
 
                         break;
-                    case 4: // tren
+                    case 4: // tren X
                         elParque.hacerFilaDelTren(numVisitante);
+                        System.out.println("el visitante " + numVisitante + " entra a la fila de espera");
                         Thread.sleep(5000);
+                        elParque.subirse();
+                        System.out.println("el visitante " + numVisitante + " se sube al tren");
+                        Thread.sleep(5000);
+                        elParque.bajarse();
                         System.out.println("el visitante N° " + numVisitante + " se baja del tren");
-
+                        Thread.sleep(5000);
                         break;
                     case 5: // espectaculo X
                         entraUltimo = elParque.entrarEspectaculo();

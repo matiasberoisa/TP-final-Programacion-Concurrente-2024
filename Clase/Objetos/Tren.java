@@ -6,12 +6,14 @@ public class Tren {
     private boolean estaAbierto;
     private BlockingQueue<String> filaEspera;
     private BlockingQueue<String> tren;
+    private BlockingQueue<String> salida;
     private boolean abierto = true;
 
     public Tren() {
         estaAbierto = true;
         filaEspera = new LinkedBlockingQueue<>();
         tren = new ArrayBlockingQueue<>(10);
+        salida = new ArrayBlockingQueue<>(10);
     }
 
     public boolean atraccionAbierta() {
@@ -25,16 +27,32 @@ public class Tren {
     public void hacerFila(String nombre) throws InterruptedException {
         if (estaAbierto) {
             filaEspera.put(nombre);
-            System.out.println("el visitante " + nombre + " entra a la fila de espera");
+        }
+    }
+
+    public void subirse() throws InterruptedException {
+        if (estaAbierto) {
             tren.take();
             filaEspera.take();
-            System.out.println("el visitante " + nombre + " se sube al tren");
         }
     }
 
     public void dejarSubir() {
         try {
             tren.put("");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void bajarse() throws InterruptedException {
+        salida.take();
+
+    }
+
+    public void dejarBajar() {
+        try {
+            salida.put("");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

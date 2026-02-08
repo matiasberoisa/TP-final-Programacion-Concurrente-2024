@@ -119,6 +119,18 @@ public class Parque {
         return elTren.cantidadVisitantesAdentro();
     }
 
+    public void subirse() throws InterruptedException {
+        elTren.subirse();
+    }
+
+    public void bajarse() throws InterruptedException {
+        elTren.bajarse();
+    }
+
+    public void liberarSalida() {
+        elTren.dejarBajar();
+    }
+
     // metodos del espectaculo
 
     public boolean entrarEspectaculo() {
