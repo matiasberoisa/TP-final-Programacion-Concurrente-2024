@@ -1,0 +1,13 @@
+existen algunos ejercicios que tienen una capacidad limitada para cierto objeto, esos tienen la capacidad fija.
+para aquellos que no tienen capacidad determina se usa un Random para determinar la capacidad.
+puede que el random falle si no tiene implementado el metodo nextInt con primer y ultimo digito
+
+*PROBLEMAS* 
+existieron un par de problemas o dudas que surgieron durante el desarrollo del tp, a continuacion esta explicada NO implementada una solucion a dicho problema
+*EN EL COMEDOR*
+en una mesa ocupada, esperan 4 hilos, 2 se quedan y 2 se van, al liberarse, los 2 hilos entran y se quedan esperando a otros 2
+como se resuelve el problema del await() en la mesa?
+hacer un await(timeout, unit) que use un tiempo luego de que cierto tiempo no se cumpla la barrera, se rompa y libere los hilos dentro
+*CON EL TIEMPO*
+para las 19 si un juego se cierra, pueden usarlo aquellos visitantes que ya se encontraban dentro?
+yo lo deje implementado asi, para las 19 los que no entraron se retiran del juego y pasean por el parque

@@ -1,3 +1,0 @@
-*PROBLEMA* en una mesa ocupada, esperan 4 hilos, 2 se quedan y 2 se van, al liberarse, los 2 hilos entran y se quedan esperando a otros 2
-como se resuelve el problema del await() en la mesa?
-hacer un await(timeout, unit) que use un tiempo luego de que cierto tiempo no se cumpla la barrera, se rompa y libere los hilos dentro
