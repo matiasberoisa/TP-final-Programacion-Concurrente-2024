@@ -25,6 +25,8 @@ public class Comedor {
         abierto = false;
     }
 
+    //////////////////// metodos del visitante ////////////////////
+
     public synchronized boolean buscarMesa(String numVisitante) throws InterruptedException {
         Random random = new Random();
         boolean disponible = false, decideEsperar = random.nextBoolean(), entro = false;

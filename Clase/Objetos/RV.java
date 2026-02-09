@@ -26,6 +26,8 @@ public class RV {
         abierto = false;
     }
 
+    //////////////////// metodos del visitante ////////////////////
+
     public void tomarEquipo() {
         try {
             mutex.acquire();
@@ -41,6 +43,8 @@ public class RV {
         semaforoVisor.release();
         semaforoEncargado.release();
     }
+
+    //////////////////// metodos del empleado ////////////////////
 
     public void esperarEquipo() {
         try {

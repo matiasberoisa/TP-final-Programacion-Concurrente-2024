@@ -27,6 +27,8 @@ public class Espectaculo {
         abierto = false;
     }
 
+    //////////////////// metodos del visitante ////////////////////
+
     public boolean entrarEspectaculo() {
         boolean entro = false, ultimo = false;
         try {

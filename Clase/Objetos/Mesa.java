@@ -29,6 +29,8 @@ public class Mesa {
         abierto = false;
     }
 
+    //////////////////// metodos del visitante ////////////////////
+
     public void entrarMesa() {
         try {
             barreraEntrar.await();

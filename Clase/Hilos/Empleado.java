@@ -23,7 +23,6 @@ public class Empleado implements Runnable {
 
     public void run() {
         try {
-
             if (tipoTrabajo.equals("juegosPremio")) {
                 System.out.println("el empleado " + numEmpleado + " inicia el trabajo en " + tipoTrabajo +
                         " puesto: " + numMesa);

@@ -9,18 +9,18 @@ public class Parque {
     private Espectaculo elEspectaculo; // locks con condiciones
     private AutitoChocador elAutito; // monitores
     private JuegosDePremio losJuegosDePremio; // exchanger
-    private RV realidadVirtual; // semaforos genericos X
+    private RV realidadVirtual; // semaforos genericos
     private Tren elTren; // blocking queue
     private Boolean abierto = false;
     private int tiempoActual = 0;
     private Random unRandom = new Random();
 
-    public Parque(int em) {
-        elComedor = new Comedor(2);
+    public Parque(int emJuegos, int emRv) {
+        elComedor = new Comedor(unRandom.nextInt(2, 5));
         elEspectaculo = new Espectaculo();
         elAutito = new AutitoChocador(10);
-        losJuegosDePremio = new JuegosDePremio(unRandom.nextInt(em));
-        realidadVirtual = new RV(unRandom.nextInt(2, 5), unRandom.nextInt(2, 5) * 2, unRandom.nextInt(2, 5));
+        losJuegosDePremio = new JuegosDePremio(emJuegos);
+        realidadVirtual = new RV(unRandom.nextInt(emRv, 5), unRandom.nextInt(emRv, 5) * 2, unRandom.nextInt(emRv, 5));
         elTren = new Tren();
     }
 
@@ -45,7 +45,11 @@ public class Parque {
         return abierto;
     }
 
-    // metodos de autito chocador
+    //////////////////// metodos de autito chocador ////////////////////
+
+    public boolean autitosAbierto() {
+        return elAutito.atraccionAbierta();
+    }
 
     public boolean subirAutitoChocador() throws InterruptedException {
         return elAutito.subirse();
@@ -59,7 +63,11 @@ public class Parque {
         elAutito.habilitarSubida();
     }
 
-    // metodos de juegos de premio
+    ///////////////////// metodos de juegos de premio ////////////////////
+
+    public boolean juegosAbierto() {
+        return losJuegosDePremio.atraccionAbierta();
+    }
 
     public void tomarFicha(int i) throws InterruptedException {
         losJuegosDePremio.tomarFicha(i);
@@ -73,7 +81,11 @@ public class Parque {
         return losJuegosDePremio.cambiarPremio(i, ficha);
     }
 
-    // metodos de realidad virtual
+    //////////////////// metodos de realidad virtual ////////////////////
+
+    public boolean RVAbierto() {
+        return realidadVirtual.atraccionAbierta();
+    }
 
     public void entrarRealidadVirtual() {
         realidadVirtual.tomarEquipo();
@@ -91,7 +103,11 @@ public class Parque {
         realidadVirtual.esperarEquipo();
     }
 
-    // metodos del comedor
+    ///////////////////// metodos del comedor ////////////////////
+
+    public boolean comedorAbierto() {
+        return elComedor.atraccionAbierta();
+    }
 
     public boolean esperarMesaDisponible(String numVisitante) {
         boolean entroComedor = false;
@@ -115,7 +131,11 @@ public class Parque {
         elComedor.dejarMesa(mesaUsada);
     }
 
-    // metodos del tren
+    //////////////////// metodos del tren ////////////////////
+
+    public boolean trenAbierto() {
+        return elTren.atraccionAbierta();
+    }
 
     public void hacerFilaDelTren(String nombre) {
         try {
@@ -145,7 +165,11 @@ public class Parque {
         elTren.dejarBajar();
     }
 
-    // metodos del espectaculo
+    //////////////////// metodos del espectaculo ////////////////////
+
+    public boolean espectaculoAbierto() {
+        return elEspectaculo.atraccionAbierta();
+    }
 
     public boolean entrarEspectaculo() {
         return elEspectaculo.entrarEspectaculo();
@@ -163,7 +187,7 @@ public class Parque {
         elEspectaculo.habilitarEntrada();
     }
 
-    // metodos del tiempo
+    //////////////////// metodos del tiempo ////////////////////
 
     public void registrarTiempo(int ti) {
         tiempoActual = ti;

@@ -18,6 +18,7 @@ public class JuegosDePremio {
         exchanger = new Exchanger[encargados];
         for (int i = 0; i < encargados; i++) {
             exchanger[i] = new Exchanger<>();
+            semaforos[i] = new Semaphore(1);
         }
         mutex = new Semaphore(1);
     }
@@ -57,22 +58,19 @@ public class JuegosDePremio {
     public int entrarFila() throws InterruptedException {
         mutex.acquire();
         visitantes++;
-        boolean encontrado = false;
-        int contador = 0;
-        while (!encontrado && contador < semaforos.length) {
-            System.out.println(contador);
-            if (!semaforos[contador].tryAcquire()) {
-                encontrado = true;
-            } else {
-                contador++;
+        int contador = 0, encargadoLibre = -1;
+        while (encargadoLibre == -1 && contador < semaforos.length) {
+            if (semaforos[contador].availablePermits() > 0) {
+                encargadoLibre = contador;
             }
+            contador++;
         }
-        if (!encontrado) {
-            contador = random.nextInt(0, encargados);
+        if (encargadoLibre == -1) {
+            encargadoLibre = random.nextInt(0, encargados);
         }
         mutex.release();
-        semaforos[contador].acquire();
-        return contador;
+        semaforos[encargadoLibre].acquire();
+        return encargadoLibre;
     }
 
     public String cambiarPremio(int i, String ficha) throws InterruptedException {

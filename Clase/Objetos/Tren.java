@@ -24,6 +24,8 @@ public class Tren {
         abierto = false;
     }
 
+    //////////////////// metodos del visitante ////////////////////
+
     public void hacerFila(String nombre) throws InterruptedException {
         if (estaAbierto) {
             filaEspera.put(nombre);
@@ -37,17 +39,19 @@ public class Tren {
         }
     }
 
+    public void bajarse() throws InterruptedException {
+        salida.take();
+
+    }
+
+    //////////////////// metodos del conductor ////////////////////
+
     public void dejarSubir() {
         try {
             tren.put("");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    public void bajarse() throws InterruptedException {
-        salida.take();
-
     }
 
     public void dejarBajar() {
