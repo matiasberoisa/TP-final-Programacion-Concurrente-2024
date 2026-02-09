@@ -15,11 +15,11 @@ public class Parque {
     private int tiempoActual = 0;
     private Random unRandom = new Random();
 
-    public Parque() {
+    public Parque(int em) {
         elComedor = new Comedor(2);
         elEspectaculo = new Espectaculo();
         elAutito = new AutitoChocador(10);
-        losJuegosDePremio = new JuegosDePremio();
+        losJuegosDePremio = new JuegosDePremio(unRandom.nextInt(em));
         realidadVirtual = new RV(unRandom.nextInt(2, 5), unRandom.nextInt(2, 5) * 2, unRandom.nextInt(2, 5));
         elTren = new Tren();
     }
