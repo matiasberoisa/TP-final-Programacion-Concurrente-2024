@@ -59,6 +59,20 @@ public class Parque {
         elAutito.habilitarSubida();
     }
 
+    // metodos de juegos de premio
+
+    public void tomarFicha(int i) throws InterruptedException {
+        losJuegosDePremio.tomarFicha(i);
+    }
+
+    public int entrarFila() throws InterruptedException {
+        return losJuegosDePremio.entrarFila();
+    }
+
+    public String cambiarPremio(int i, String ficha) throws InterruptedException {
+        return losJuegosDePremio.cambiarPremio(i, ficha);
+    }
+
     // metodos de realidad virtual
 
     public void entrarRealidadVirtual() {

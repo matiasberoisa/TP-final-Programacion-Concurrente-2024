@@ -6,6 +6,7 @@ public class Empleado implements Runnable {
     private int numEmpleado;
     private Parque elParque;
     private String tipoTrabajo;
+    private int numMesa;
 
     public Empleado(int num, Parque elP, String tt) {
         numEmpleado = num;
@@ -13,24 +14,21 @@ public class Empleado implements Runnable {
         tipoTrabajo = tt;
     }
 
+    public Empleado(int num, Parque elP, String tt, int nn) {
+        numEmpleado = num;
+        elParque = elP;
+        tipoTrabajo = tt;
+        numMesa = nn;
+    }
+
     public void run() {
         try {
-            System.out.println("el empleado " + numEmpleado + " inicia el trabajo en " + tipoTrabajo);
-            if (tipoTrabajo.equals("autitoChocador")) {
-                while (elParque.tiempoActual() < 19) {
-                    if (elParque.tiempoActual() == 19) {
 
-                    }
-                }
-            }
             if (tipoTrabajo.equals("juegosPremio")) {
+                System.out.println("el empleado " + numEmpleado + " inicia el trabajo en " + tipoTrabajo +
+                        " puesto: " + numMesa);
                 while (elParque.tiempoActual() < 19) {
-
-                }
-            }
-            if (tipoTrabajo.equals("espectaculo")) {
-                while (elParque.tiempoActual() < 19) {
-
+                    elParque.tomarFicha(numMesa);
                 }
             }
             if (tipoTrabajo.equals("realidadVirtual")) {

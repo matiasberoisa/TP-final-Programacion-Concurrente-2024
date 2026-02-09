@@ -8,8 +8,7 @@ public class JuegosDePremio {
     private Exchanger<String>[] exchanger;
     private Semaphore[] semaforos;
     private Semaphore mutex;
-    private int encargados;
-    private int visitantes;
+    private int encargados, visitantes;
     private Random random = new Random();
 
     public JuegosDePremio(int en) {
@@ -18,7 +17,6 @@ public class JuegosDePremio {
         semaforos = new Semaphore[encargados];
         exchanger = new Exchanger[encargados];
         for (int i = 0; i < encargados; i++) {
-            semaforos[i] = new Semaphore(1);
             exchanger[i] = new Exchanger<>();
         }
         mutex = new Semaphore(1);
@@ -36,7 +34,7 @@ public class JuegosDePremio {
         String ficha = exchanger[i].exchange(""), resultado = "";
         System.out.println("el encargado " + i + " recibe la ficha: " + ficha);
         if (!abierto) {
-            exchanger[i].exchange("atraccion cerrada");
+            exchanger[i].exchange("cerrado");
         } else {
             int premio = random.nextInt(1, 150);
             resultado = "el encargado " + i + " otorga el premio: " + premio;
@@ -47,7 +45,6 @@ public class JuegosDePremio {
             } else {
                 resultado += ", premio chico";
             }
-            System.out.println(resultado);
             exchanger[i].exchange(resultado);
         }
 
@@ -61,25 +58,31 @@ public class JuegosDePremio {
         mutex.acquire();
         visitantes++;
         boolean encontrado = false;
-        int contador = 0, encargadoLibre = 0;
-        while (!encontrado && contador < encargados) {
-            if (semaforos[contador].tryAcquire()) {
+        int contador = 0;
+        while (!encontrado && contador < semaforos.length) {
+            System.out.println(contador);
+            if (!semaforos[contador].tryAcquire()) {
                 encontrado = true;
-                encargadoLibre = contador;
             } else {
                 contador++;
             }
         }
-        return encargadoLibre;
+        if (!encontrado) {
+            contador = random.nextInt(0, encargados);
+        }
+        mutex.release();
+        semaforos[contador].acquire();
+        return contador;
     }
 
-    public void cambiarPremio(int i) throws InterruptedException {
-        mutex.release();
-        if (i == 0) {
-            i = random.nextInt(encargados);
+    public String cambiarPremio(int i, String ficha) throws InterruptedException {
+        String ticket = exchanger[i].exchange(ficha);
+        if (!ticket.equals("cerrado")) {
+            ticket = exchanger[i].exchange(null);
         }
-        semaforos[i].acquire();
-
+        visitantes--;
+        semaforos[i].release();
+        return ticket;
     }
 
 }
