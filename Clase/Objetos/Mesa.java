@@ -29,6 +29,10 @@ public class Mesa {
         abierto = false;
     }
 
+    public void cerrarComedor() {
+        barreraSalir.reset();
+    }
+
     //////////////////// metodos del visitante ////////////////////
 
     public void entrarMesa() {
@@ -38,7 +42,7 @@ public class Mesa {
                 mesaDisponible = false;
             }
         } catch (InterruptedException | BrokenBarrierException e) {
-            e.printStackTrace();
+
         }
 
     }
@@ -50,7 +54,7 @@ public class Mesa {
                 mesaDisponible = true;
             }
         } catch (InterruptedException | BrokenBarrierException e) {
-            e.printStackTrace();
+
         }
     }
 

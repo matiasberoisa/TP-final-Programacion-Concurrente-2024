@@ -24,6 +24,12 @@ public class Tren {
         abierto = false;
     }
 
+    public void notificarCierre() throws InterruptedException {
+        for (int i = 0; i < 10 - cantidadVisitantesAdentro(); i++) {
+            salida.put("");
+        }
+    }
+
     //////////////////// metodos del visitante ////////////////////
 
     public void hacerFila(String nombre) throws InterruptedException {

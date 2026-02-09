@@ -25,6 +25,12 @@ public class Comedor {
         abierto = false;
     }
 
+    public void notificarCierre() {
+        for (int i = 0; i < mesas.length; i++) {
+            mesas[i].cerrarComedor();
+        }
+    }
+
     //////////////////// metodos del visitante ////////////////////
 
     public synchronized boolean buscarMesa(String numVisitante) throws InterruptedException {
@@ -43,7 +49,7 @@ public class Comedor {
             }
         }
         if (!disponible && decideEsperar) {
-            while (!disponible) {
+            while (!disponible && abierto) {
                 System.out.println("el visitante " + numVisitante + " decide esperar");
                 wait();
             }

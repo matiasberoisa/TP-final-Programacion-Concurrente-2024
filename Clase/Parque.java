@@ -14,6 +14,7 @@ public class Parque {
     private Boolean abierto = false;
     private int tiempoActual = 0;
     private Random unRandom = new Random();
+    private int contVisitantes;
 
     public Parque(int emJuegos, int emRv) {
         elComedor = new Comedor(unRandom.nextInt(2, 5));
@@ -22,6 +23,18 @@ public class Parque {
         losJuegosDePremio = new JuegosDePremio(emJuegos);
         realidadVirtual = new RV(unRandom.nextInt(emRv, 5), unRandom.nextInt(emRv, 5) * 2, unRandom.nextInt(emRv, 5));
         elTren = new Tren();
+    }
+
+    public synchronized void ingresarParque() {
+        contVisitantes++;
+    }
+
+    public synchronized void salirParque() {
+        contVisitantes--;
+    }
+
+    public int cantidadVisitantes() {
+        return contVisitantes;
     }
 
     public void cerrarActividades() {
@@ -43,6 +56,17 @@ public class Parque {
 
     public boolean ParqueAbierto() {
         return abierto;
+    }
+
+    public void retirarVisitantes() {
+        try {
+            elEspectaculo.notificarCierre();
+            elAutito.notificarCierre();
+            elTren.notificarCierre();
+            elComedor.notificarCierre();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     //////////////////// metodos de autito chocador ////////////////////

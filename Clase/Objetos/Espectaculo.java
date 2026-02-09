@@ -27,13 +27,19 @@ public class Espectaculo {
         abierto = false;
     }
 
+    public void notificarCierre() {
+        lock.lock();
+        grupoEspera.signalAll();
+        lock.unlock();
+    }
+
     //////////////////// metodos del visitante ////////////////////
 
     public boolean entrarEspectaculo() {
         boolean entro = false, ultimo = false;
         try {
             lock.lock();
-            while (!entro) {
+            while (!entro && abierto) {
                 tamaño++;
                 if ((tamaño > capacidad) || showEnCurso) {
                     while ((tamaño > capacidad) || showEnCurso) {

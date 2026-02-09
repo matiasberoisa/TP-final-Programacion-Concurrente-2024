@@ -26,12 +26,12 @@ public class Empleado implements Runnable {
             if (tipoTrabajo.equals("juegosPremio")) {
                 System.out.println("el empleado " + numEmpleado + " inicia el trabajo en " + tipoTrabajo +
                         " puesto: " + numMesa);
-                while (elParque.tiempoActual() < 19) {
+                while (elParque.tiempoActual() < 23) {
                     elParque.tomarFicha(numMesa);
                 }
             }
             if (tipoTrabajo.equals("realidadVirtual")) {
-                while (elParque.tiempoActual() < 19) {
+                while (elParque.tiempoActual() < 23) {
                     elParque.darEquipo();
                     elParque.esperarEquipo();
                 }
@@ -39,6 +39,7 @@ public class Empleado implements Runnable {
             if (tipoTrabajo.equals("manejadorTiempo")) {
                 System.out.println("el empleado abre el parque");
                 cerrarParque();
+                System.out.println("cantidad visitantes dentro: " + elParque.cantidadVisitantes());
                 System.out.println("el empleado cierra el parque");
             }
         } catch (Exception e) {
@@ -50,6 +51,7 @@ public class Empleado implements Runnable {
         System.out.println("se abre el parque");
         while (horas <= 23) {
             System.out.println("son las " + horas + ":00");
+            System.out.println("cantidad visitantes dentro: " + elParque.cantidadVisitantes());
             elParque.registrarTiempo(horas);
             if (horas == 18) {
                 elParque.cerrarParque();
@@ -59,8 +61,11 @@ public class Empleado implements Runnable {
                 elParque.cerrarActividades();
                 System.out.println("los juegos han cerrado");
             }
+            if (horas > 19) {
+                elParque.retirarVisitantes();
+            }
             try {
-                Thread.sleep(3000);
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

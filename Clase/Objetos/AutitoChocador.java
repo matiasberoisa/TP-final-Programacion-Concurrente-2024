@@ -17,28 +17,30 @@ public class AutitoChocador {
         abierto = false;
     }
 
+    public synchronized void notificarCierre() {
+        notifyAll();
+    }
+
     //////////////////// metodos del visitante ////////////////////
 
     public synchronized boolean subirse() throws InterruptedException {
         boolean entro = false, ultimo = false;
-        if (abierto) {
-            while (!entro) {
-                cantidad++;
-                if ((cantidad > limite) || !puedeSubir) {
-                    while ((cantidad > limite) || !puedeSubir) {
-                        wait();
-                    }
-                } else {
-                    if (cantidad <= limite) {
-                        entro = true;
-                        if (cantidad == limite) {
-                            puedeSubir = false;
-                            ultimo = true;
-                            notifyAll();
-                        } else {
-                            while (cantidad < limite) {
-                                wait();
-                            }
+        while (!entro && abierto) {
+            cantidad++;
+            if ((cantidad > limite) || !puedeSubir) {
+                while ((cantidad > limite) || !puedeSubir) {
+                    wait();
+                }
+            } else {
+                if (cantidad <= limite) {
+                    entro = true;
+                    if (cantidad == limite) {
+                        puedeSubir = false;
+                        ultimo = true;
+                        notifyAll();
+                    } else {
+                        while (cantidad < limite) {
+                            wait();
                         }
                     }
                 }
