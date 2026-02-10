@@ -23,7 +23,6 @@ public class Visitante implements Runnable {
                     + " entra al parque");
             while (elParque.tiempoActual() < 19) {
                 numeroAtraccion = unRandom.nextInt(1, 6);
-                // numeroAtraccion = 5;
                 // un switch con cada atraccion para que el visitante pueda acceder
                 switch (numeroAtraccion) {
                     // todos los juegos estan abiertos hasta las 19, luego de eso se cierran y no se
@@ -77,7 +76,7 @@ public class Visitante implements Runnable {
                                     + " se retira");
                         }
                         break;
-                    case 3: // entra al comedor CORREGIR
+                    case 3: // entra al comedor
                         System.out.println("el visitante N° " + numVisitante + " se dirige al comedor");
                         Thread.sleep(2000);
                         boolean mesaDisponible = elParque.esperarMesaDisponible(numVisitante); // comedor.buscarMesa()

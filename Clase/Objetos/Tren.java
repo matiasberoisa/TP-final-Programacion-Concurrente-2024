@@ -3,14 +3,12 @@ package Clase.Objetos;
 import java.util.concurrent.*;
 
 public class Tren {
-    private boolean estaAbierto;
     private BlockingQueue<String> filaEspera;
     private BlockingQueue<String> tren;
     private BlockingQueue<String> salida;
     private boolean abierto = true;
 
     public Tren() {
-        estaAbierto = true;
         filaEspera = new LinkedBlockingQueue<>();
         tren = new ArrayBlockingQueue<>(10);
         salida = new ArrayBlockingQueue<>(10);
@@ -25,25 +23,24 @@ public class Tren {
     }
 
     public void notificarCierre() throws InterruptedException {
-        for (int i = 0; i < tren.remainingCapacity(); i++) {
-            tren.put("");
+        while (filaEspera.size() != 0) {
+            for (int i = 0; i < tren.remainingCapacity(); i++) {
+                tren.put("");
+            }
         }
-        filaEspera.clear();
     }
 
     //////////////////// metodos del visitante ////////////////////
 
     public void hacerFila(String nombre) throws InterruptedException {
-        if (estaAbierto) {
+        if (abierto) {
             filaEspera.put(nombre);
         }
     }
 
     public void subirse() throws InterruptedException {
-        if (estaAbierto) {
-            tren.take();
-            filaEspera.take();
-        }
+        tren.take();
+        filaEspera.take();
     }
 
     public void bajarse() throws InterruptedException {

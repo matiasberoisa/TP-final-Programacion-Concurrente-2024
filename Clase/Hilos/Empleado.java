@@ -60,7 +60,7 @@ public class Empleado implements Runnable {
                 elParque.cerrarActividades();
                 System.out.println("los juegos han cerrado");
             }
-            if (horas > 19) {
+            if (horas >= 19) {
                 try {
                     elParque.retirarVisitantes();
                 } catch (InterruptedException e) {

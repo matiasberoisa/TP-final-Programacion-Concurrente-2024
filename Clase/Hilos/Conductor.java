@@ -13,7 +13,7 @@ public class Conductor implements Runnable {
     public void run() {
         int asientosDisponibles = 0, minutos;
         try {
-            while (elParque.tiempoActual() < 19) {
+            while (elParque.tiempoActual() <= 19) {
                 minutos = 0;
                 System.out.println("el conductor habilita el tren para subir");
                 for (int i = 0; i < 10; i++) {
