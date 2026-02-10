@@ -23,6 +23,7 @@ public class Visitante implements Runnable {
                     + " entra al parque");
             while (elParque.tiempoActual() < 19) {
                 numeroAtraccion = unRandom.nextInt(1, 6);
+                // numeroAtraccion = 5;
                 // un switch con cada atraccion para que el visitante pueda acceder
                 switch (numeroAtraccion) {
                     // todos los juegos estan abiertos hasta las 19, luego de eso se cierran y no se
@@ -62,16 +63,21 @@ public class Visitante implements Runnable {
                     case 2: // entra al area de juegos de premio
                         System.out.println("el visitante N° " + numVisitante + " se acerca a los juegos de premio");
                         int fila = elParque.entrarFila();
-                        System.out.println("el visitante N° " + numVisitante + " entra en la fila: " + fila);
-                        Thread.sleep(3000);
-                        String ticket = elParque.cambiarPremio(fila, numVisitante);
-                        if (ticket.equals("cerrado")) {
-                            System.out.println("el parque cerro, no se puede cambiar el premio");
+                        if (elParque.juegosAbierto()) { // entra si los juegos siguen abiertos
+                            System.out.println("el visitante N° " + numVisitante + " entra en la fila: " + fila);
+                            Thread.sleep(3000);
+                            String ticket = elParque.cambiarPremio(fila, numVisitante);
+                            if (ticket.equals("cerrado")) {
+                                System.out.println("el parque cerro, no se puede cambiar el premio");
+                            } else {
+                                System.out.println(ticket + " al visitante N° " + numVisitante);
+                            }
                         } else {
-                            System.out.println(ticket + " al visitante N° " + numVisitante);
+                            System.out.println("los juegos estan cerrados. el visitante N° " + numVisitante
+                                    + " se retira");
                         }
                         break;
-                    case 3: // entra al comedor
+                    case 3: // entra al comedor CORREGIR
                         System.out.println("el visitante N° " + numVisitante + " se dirige al comedor");
                         Thread.sleep(2000);
                         boolean mesaDisponible = elParque.esperarMesaDisponible(numVisitante); // comedor.buscarMesa()
@@ -81,10 +87,16 @@ public class Visitante implements Runnable {
                                         .println("el visitante N° " + numVisitante + " encuentra una mesa disponible");
                                 int mesa = elParque.buscarMesa(); // comedor.encontrarMesa()
                                 elParque.usarMesa(mesa);
-                                System.out.println("el visitante N° " + numVisitante + " se sienta en la mesa " + mesa);
-                                Thread.sleep(unRandom.nextInt(3, 8) * 1000);
-                                elParque.dejarMesa(mesa);
-                                System.out.println("el visitante N° " + numVisitante + " deja la mesa " + mesa);
+                                if (elParque.comedorAbierto()) {
+                                    System.out.println(
+                                            "el visitante N° " + numVisitante + " se sienta en la mesa " + mesa);
+                                    Thread.sleep(unRandom.nextInt(3, 8) * 1000);
+                                    elParque.dejarMesa(mesa);
+                                    System.out.println("el visitante N° " + numVisitante + " deja la mesa " + mesa);
+                                } else {
+                                    System.out.println("el comedor esta cerrado. el visitante N° " + numVisitante
+                                            + " se retira del comedor");
+                                }
                             } else {
                                 System.out
                                         .println("el visitante N° " + numVisitante +
@@ -96,11 +108,10 @@ public class Visitante implements Runnable {
                         }
                         break;
                     case 4: // entra al tren
+                        elParque.hacerFilaDelTren(numVisitante);
+                        System.out.println("el visitante " + numVisitante + " entra a la fila de espera");
+                        elParque.subirse();
                         if (elParque.trenAbierto()) {
-                            elParque.hacerFilaDelTren(numVisitante);
-                            System.out.println("el visitante " + numVisitante + " entra a la fila de espera");
-                            Thread.sleep(5000);
-                            elParque.subirse();
                             System.out.println("el visitante " + numVisitante + " se sube al tren");
                             Thread.sleep(5000);
                             elParque.bajarse();
@@ -123,15 +134,19 @@ public class Visitante implements Runnable {
                                 System.out.println("el visitante N° " + numVisitante + " entra al espectaculo");
                             }
                             boolean saleUltimo = elParque.sentarse();
-                            Thread.sleep(3000);
-                            if (saleUltimo) {
-                                System.out.println(
-                                        "el visitante N° " + numVisitante
-                                                + " fue el ultimo en salir, habilita al resto a entrar");
+                            if (elParque.espectaculoAbierto()) {
                                 Thread.sleep(3000);
-                                elParque.habilitarSalida();
+                                if (saleUltimo) {
+                                    System.out.println(
+                                            "el visitante N° " + numVisitante
+                                                    + " fue el ultimo en salir, habilita al resto a entrar");
+                                    Thread.sleep(3000);
+                                    elParque.habilitarSalida();
+                                } else {
+                                    System.out.println("el visitante N° " + numVisitante + " sale al espectaculo");
+                                }
                             } else {
-                                System.out.println("el visitante N° " + numVisitante + " sale al espectaculo");
+                                System.out.println("show cancelado. parque cerrado");
                             }
                         } else {
                             System.out.println(
@@ -139,9 +154,9 @@ public class Visitante implements Runnable {
                         }
                         break;
                     case 6: // entra a la realidad virtual
+                        elParque.entrarRealidadVirtual();
                         if (elParque.RVAbierto()) {
                             System.out.println("el visitante N° " + numVisitante + " quiere entrar a la RV");
-                            elParque.entrarRealidadVirtual();
                             System.out.println(
                                     "el visitante N° " + numVisitante + " toma los elementos y se mete a la RV");
                             Thread.sleep(5000);
@@ -149,6 +164,9 @@ public class Visitante implements Runnable {
                                     "el visitante N° " + numVisitante + " devuelve los elementos y se va de la RV");
                             elParque.salirRealidadVirtual();
                             Thread.sleep(5000);
+                        } else {
+                            System.out.println(
+                                    "cerro la RV. el visitante N° " + numVisitante + " se va");
                         }
                         break;
                 }

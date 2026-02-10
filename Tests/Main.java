@@ -13,11 +13,23 @@ public class Main {
 
         /////////////////// creacion de todos los visitantes ///////////////////
 
-        for (int j = 1; j <= 50; j++) {
+        for (int j = 1; j <= 100; j++) {
             Visitante unVisitante = new Visitante("" + j, elParque);
             Thread hiloVisitante = new Thread(unVisitante);
             hiloVisitante.start();
         }
+
+        ////////// creacion del empleado manejador del tiempo //////////
+
+        Empleado elEmpleado = new Empleado(0, elParque, "manejadorTiempo");
+        Thread hiloEmpleadoTiempo = new Thread(elEmpleado);
+        hiloEmpleadoTiempo.start();
+
+        ////////// creacion del conductor del tren //////////
+
+        Conductor conductor = new Conductor(elParque);
+        Thread hiloConductor = new Thread(conductor);
+        hiloConductor.start();
 
         ////////// creacion de los empleados en los juegos de premio //////////
 
@@ -34,18 +46,6 @@ public class Main {
             Thread hiloEmpleado = new Thread(unEmpleado);
             hiloEmpleado.start();
         }
-
-        ////////// creacion del empleado manejador del tiempo //////////
-
-        Empleado elEmpleado = new Empleado(0, elParque, "manejadorTiempo");
-        Thread hiloEmpleadoTiempo = new Thread(elEmpleado);
-        hiloEmpleadoTiempo.start();
-
-        ////////// creacion del conductor del tren //////////
-
-        Conductor conductor = new Conductor(elParque);
-        Thread hiloConductor = new Thread(conductor);
-        hiloConductor.start();
 
     }
 }

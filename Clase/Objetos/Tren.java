@@ -25,9 +25,10 @@ public class Tren {
     }
 
     public void notificarCierre() throws InterruptedException {
-        for (int i = 0; i < 10 - cantidadVisitantesAdentro(); i++) {
-            salida.put("");
+        for (int i = 0; i < tren.remainingCapacity(); i++) {
+            tren.put("");
         }
+        filaEspera.clear();
     }
 
     //////////////////// metodos del visitante ////////////////////
@@ -70,5 +71,13 @@ public class Tren {
 
     public int cantidadVisitantesAdentro() {
         return tren.remainingCapacity();
+    }
+
+    public int visitantesSalida() {
+        return salida.remainingCapacity();
+    }
+
+    public int visitantesEspera() {
+        return filaEspera.size();
     }
 }

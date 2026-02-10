@@ -25,7 +25,8 @@ public class Comedor {
         abierto = false;
     }
 
-    public void notificarCierre() {
+    public synchronized void notificarCierre() {
+        notifyAll();
         for (int i = 0; i < mesas.length; i++) {
             mesas[i].cerrarComedor();
         }

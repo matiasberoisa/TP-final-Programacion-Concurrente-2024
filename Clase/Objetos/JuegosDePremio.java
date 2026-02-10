@@ -31,12 +31,24 @@ public class JuegosDePremio {
         abierto = false;
     }
 
+    public void notificarCierre() {
+        for (int i = 0; i < semaforos.length; i++) {
+            semaforos[i].release(semaforos[i].getQueueLength());
+        }
+    }
+
+    public void liberarEmpleados(int numEmpleados) throws InterruptedException {
+        for (int i = 0; i < numEmpleados; i++) {
+            exchanger[i].exchange(null);
+        }
+    }
+
     public void tomarFicha(int i) throws InterruptedException {
         String ficha = exchanger[i].exchange(""), resultado = "";
-        System.out.println("el encargado " + i + " recibe la ficha: " + ficha);
-        if (!abierto) {
+        if (!abierto && !ficha.equals(null)) {
             exchanger[i].exchange("cerrado");
         } else {
+            System.out.println("el encargado " + i + " recibe la ficha: " + ficha);
             int premio = random.nextInt(1, 150);
             resultado = "el encargado " + i + " otorga el premio: " + premio;
             if (premio > 100) {
@@ -48,7 +60,6 @@ public class JuegosDePremio {
             }
             exchanger[i].exchange(resultado);
         }
-
     }
 
     public int getVisitantes() {
@@ -59,14 +70,16 @@ public class JuegosDePremio {
         mutex.acquire();
         visitantes++;
         int contador = 0, encargadoLibre = -1;
-        while (encargadoLibre == -1 && contador < semaforos.length) {
-            if (semaforos[contador].availablePermits() > 0) {
-                encargadoLibre = contador;
+        if (abierto) {
+            while (encargadoLibre == -1 && contador < semaforos.length) {
+                if (semaforos[contador].availablePermits() > 0) {
+                    encargadoLibre = contador;
+                }
+                contador++;
             }
-            contador++;
-        }
-        if (encargadoLibre == -1) {
-            encargadoLibre = random.nextInt(0, encargados);
+            if (encargadoLibre == -1) {
+                encargadoLibre = random.nextInt(0, encargados);
+            }
         }
         mutex.release();
         semaforos[encargadoLibre].acquire();

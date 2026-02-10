@@ -28,7 +28,7 @@ public class AutitoChocador {
         while (!entro && abierto) {
             cantidad++;
             if ((cantidad > limite) || !puedeSubir) {
-                while ((cantidad > limite) || !puedeSubir) {
+                while (((cantidad > limite) || !puedeSubir) && abierto) {
                     wait();
                 }
             } else {
@@ -39,7 +39,7 @@ public class AutitoChocador {
                         ultimo = true;
                         notifyAll();
                     } else {
-                        while (cantidad < limite) {
+                        while (cantidad < limite && abierto) {
                             wait();
                         }
                     }

@@ -12,14 +12,15 @@ public class Parque {
     private RV realidadVirtual; // semaforos genericos
     private Tren elTren; // blocking queue
     private Boolean abierto = false;
-    private int tiempoActual = 0;
+    private int tiempoActual = 0, contVisitantes, cantEmpleadosRV, cantEmpleadosJuegos;
     private Random unRandom = new Random();
-    private int contVisitantes;
 
     public Parque(int emJuegos, int emRv) {
+        cantEmpleadosJuegos = emJuegos;
+        cantEmpleadosRV = emRv;
         elComedor = new Comedor(unRandom.nextInt(2, 5));
         elEspectaculo = new Espectaculo();
-        elAutito = new AutitoChocador(10);
+        elAutito = new AutitoChocador(5);
         losJuegosDePremio = new JuegosDePremio(emJuegos);
         realidadVirtual = new RV(unRandom.nextInt(emRv, 5), unRandom.nextInt(emRv, 5) * 2, unRandom.nextInt(emRv, 5));
         elTren = new Tren();
@@ -58,15 +59,18 @@ public class Parque {
         return abierto;
     }
 
-    public void retirarVisitantes() {
-        try {
-            elEspectaculo.notificarCierre();
-            elAutito.notificarCierre();
-            elTren.notificarCierre();
-            elComedor.notificarCierre();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public void retirarVisitantes() throws InterruptedException {
+        elComedor.notificarCierre();
+        elEspectaculo.notificarCierre();
+        elAutito.notificarCierre();
+        losJuegosDePremio.notificarCierre();
+        realidadVirtual.notificarCierre();
+        elTren.notificarCierre();
+    }
+
+    public void liberarEmpleados() throws InterruptedException {
+        realidadVirtual.liberarEmpleados(cantEmpleadosRV);
+        losJuegosDePremio.liberarEmpleados(cantEmpleadosJuegos);
     }
 
     //////////////////// metodos de autito chocador ////////////////////
@@ -119,7 +123,7 @@ public class Parque {
         realidadVirtual.devolverEquipo();
     }
 
-    public void darEquipo() {
+    public void darEquipo() throws InterruptedException {
         realidadVirtual.darEquipo();
     }
 
@@ -136,7 +140,7 @@ public class Parque {
     public boolean esperarMesaDisponible(String numVisitante) {
         boolean entroComedor = false;
         try {
-            elComedor.buscarMesa(numVisitante);
+            entroComedor = elComedor.buscarMesa(numVisitante);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -175,6 +179,14 @@ public class Parque {
 
     public int cantidadVisitantesAdentro() {
         return elTren.cantidadVisitantesAdentro();
+    }
+
+    public int visitantesSalida() {
+        return elTren.visitantesSalida();
+    }
+
+    public int visitantesEspera() {
+        return elTren.visitantesEspera();
     }
 
     public void subirse() throws InterruptedException {

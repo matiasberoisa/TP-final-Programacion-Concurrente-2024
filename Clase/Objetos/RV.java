@@ -26,6 +26,14 @@ public class RV {
         abierto = false;
     }
 
+    public void notificarCierre() {
+        mutex.release(mutex.getQueueLength());
+    }
+
+    public void liberarEmpleados(int numEmpleados) {
+        semaforoEncargado.release(semaforoEncargado.getQueueLength());
+    }
+
     //////////////////// metodos del visitante ////////////////////
 
     public void tomarEquipo() {
@@ -54,14 +62,10 @@ public class RV {
         }
     }
 
-    public void darEquipo() {
-        try {
-            semaforoBase.acquire();
-            semaforoManopla.acquire(2);
-            semaforoVisor.acquire();
-            mutex.release();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public void darEquipo() throws InterruptedException {
+        semaforoBase.acquire();
+        semaforoManopla.acquire(2);
+        semaforoVisor.acquire();
+        mutex.release();
     }
 }

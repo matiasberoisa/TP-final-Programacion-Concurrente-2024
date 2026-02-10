@@ -15,25 +15,25 @@ public class Conductor implements Runnable {
         try {
             while (elParque.tiempoActual() < 19) {
                 minutos = 0;
+                System.out.println("el conductor habilita el tren para subir");
+                for (int i = 0; i < 10; i++) {
+                    elParque.habilitarTren();
+                }
+                while (minutos < 5 || asientosDisponibles < 10) {
+                    asientosDisponibles = elParque.cantidadVisitantesAdentro();
+                    minutos++;
+                    Thread.sleep(1000);
+                }
                 if (elParque.trenAbierto()) {
-                    System.out.println("el conductor habilita el tren para subir");
-                    for (int i = 0; i < 10; i++) {
-                        elParque.habilitarTren();
-                    }
-                    while (minutos < 5 || asientosDisponibles < 10) {
-                        asientosDisponibles = elParque.cantidadVisitantesAdentro();
-                        minutos++;
-                        Thread.sleep(1000);
-                    }
                     System.out.println("SALE EL TREN");
-                    Thread.sleep(5000);
+                    Thread.sleep(3000);
                     System.out.println("LLEGA EL TREN");
                     System.out.println("el conductor habilita el tren para bajar");
-                    for (int i = 0; i < 10; i++) {
-                        elParque.liberarSalida();
-                    }
-                    Thread.sleep(5000);
                 }
+                for (int i = 0; i < 10; i++) {
+                    elParque.liberarSalida();
+                }
+                Thread.sleep(3000);
             }
         } catch (Exception e) {
         }

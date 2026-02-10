@@ -42,7 +42,7 @@ public class Espectaculo {
             while (!entro && abierto) {
                 tamaño++;
                 if ((tamaño > capacidad) || showEnCurso) {
-                    while ((tamaño > capacidad) || showEnCurso) {
+                    while (((tamaño > capacidad) || showEnCurso) && abierto) {
                         grupoEspera.await();
                     }
                 } else {

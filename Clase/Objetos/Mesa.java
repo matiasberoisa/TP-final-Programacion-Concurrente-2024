@@ -30,6 +30,7 @@ public class Mesa {
     }
 
     public void cerrarComedor() {
+        barreraEntrar.reset();
         barreraSalir.reset();
     }
 
