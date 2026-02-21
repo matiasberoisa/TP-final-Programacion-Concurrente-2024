@@ -26,6 +26,7 @@ public class Tren {
         while (filaEspera.size() != 0) {
             for (int i = 0; i < tren.remainingCapacity(); i++) {
                 tren.put("");
+                salida.put("");
             }
         }
     }

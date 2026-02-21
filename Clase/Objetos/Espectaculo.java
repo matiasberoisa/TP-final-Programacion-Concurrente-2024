@@ -32,6 +32,9 @@ public class Espectaculo {
     public void notificarCierre() {
         lock.lock();
         grupoEspera.signalAll();
+        for (int i = 0; i < grupos.length; i++) {
+            grupos[i].signalAll();
+        }
         lock.unlock();
     }
 
