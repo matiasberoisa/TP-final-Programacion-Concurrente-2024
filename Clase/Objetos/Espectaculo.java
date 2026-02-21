@@ -3,20 +3,22 @@ package Clase.Objetos;
 import java.util.concurrent.locks.*;
 
 public class Espectaculo {
-    private int capacidad, tamañoGrupo, tamaño, limiteGrupo, tamañoActual;
+    private int capacidad, tamañoGrupo, tamaño, tamañoActual;
     private Lock lock;
-    private Condition grupoEspera, grupoSalida, grupoEntrada;
-    private boolean abierto = true, showEnCurso = false;
+    private Condition grupoEspera, grupoSalida;
+    private Condition[] grupos = new Condition[4];
+    private boolean abierto = true;
 
     public Espectaculo() {
         capacidad = 20;
         tamañoGrupo = 0;
-        limiteGrupo = 5;
         tamañoActual = 0;
         lock = new ReentrantLock();
         grupoEspera = lock.newCondition();
         grupoSalida = lock.newCondition();
-        grupoEntrada = lock.newCondition();
+        for (int i = 0; i < grupos.length; i++) {
+            grupos[i] = lock.newCondition();
+        }
     }
 
     public boolean atraccionAbierta() {
@@ -41,23 +43,20 @@ public class Espectaculo {
             lock.lock();
             while (!entro && abierto) {
                 tamaño++;
-                if ((tamaño > capacidad) || showEnCurso) {
-                    while (((tamaño > capacidad) || showEnCurso) && abierto) {
+                if (tamaño > capacidad) {
+                    while (tamaño > capacidad && abierto) {
                         grupoEspera.await();
                     }
                 } else {
                     tamañoGrupo++;
-                    if (tamañoGrupo <= limiteGrupo) {
-                        entro = true;
-                        if (tamañoGrupo == limiteGrupo) {
-                            ultimo = true;
-                            grupoEntrada.signalAll();
-                        }
-                        while (tamañoGrupo < limiteGrupo) {
-                            grupoEntrada.await();
-                        }
+                    entro = true;
+                    int numGrupo = tamañoGrupo % 4; // segun el tamaño del grupo actual, se ubica en un grupo
+                    if (tamañoGrupo == capacidad) {
+                        ultimo = true;
                     }
-
+                    while (tamañoGrupo < capacidad) {
+                        grupos[numGrupo].await();
+                    }
                 }
             }
         } catch (Exception e) {
@@ -78,7 +77,6 @@ public class Espectaculo {
                     grupoSalida.await();
                 }
             } else {
-                showEnCurso = true;
                 if (tamañoActual == capacidad) {
                     System.out.println("/////EMPIEZA LA FUNCION/////");
                     ultimo = true;
@@ -93,11 +91,9 @@ public class Espectaculo {
         return ultimo;
     }
 
-    public void habilitarEntrada() {
+    public void habilitarEntrada(int i) {
         lock.lock();
-        tamañoGrupo = 0;
-        tamaño = 0;
-        grupoEspera.signalAll();
+        grupos[i].signalAll();
         lock.unlock();
     }
 
@@ -106,7 +102,6 @@ public class Espectaculo {
         tamañoGrupo = 0;
         tamaño = 0;
         tamañoActual = 0;
-        showEnCurso = false;
         grupoEspera.signalAll();
         System.out.println("/////INICIA NUEVO SHOW/////");
         lock.unlock();

@@ -36,7 +36,7 @@ public class RV {
 
     //////////////////// metodos del visitante ////////////////////
 
-    public void tomarEquipo() {
+    public void entrarFila() {
         try {
             mutex.acquire();
         } catch (InterruptedException e) {
@@ -45,10 +45,18 @@ public class RV {
 
     }
 
+    public void tomarEquipo() {
+        try {
+            semaforoBase.acquire();
+            semaforoManopla.acquire(2);
+            semaforoVisor.acquire();
+            mutex.release();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void devolverEquipo() {
-        semaforoBase.release();
-        semaforoManopla.release(2);
-        semaforoVisor.release();
         semaforoEncargado.release();
     }
 
@@ -62,10 +70,9 @@ public class RV {
         }
     }
 
-    public void darEquipo() throws InterruptedException {
-        semaforoBase.acquire();
-        semaforoManopla.acquire(2);
-        semaforoVisor.acquire();
-        mutex.release();
+    public void habilitarEquipo() {
+        semaforoBase.release();
+        semaforoManopla.release(2);
+        semaforoVisor.release();
     }
 }

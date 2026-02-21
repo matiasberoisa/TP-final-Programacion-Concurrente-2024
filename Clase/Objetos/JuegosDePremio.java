@@ -43,6 +43,8 @@ public class JuegosDePremio {
         }
     }
 
+    //////////////////// metodos del encargado ////////////////////
+
     public void tomarFicha(int i) throws InterruptedException {
         String ficha = exchanger[i].exchange(""), resultado = "";
         if (!abierto && !ficha.equals(null)) {
@@ -65,6 +67,8 @@ public class JuegosDePremio {
     public int getVisitantes() {
         return visitantes;
     }
+
+    //////////////////// metodos del visitante ////////////////////
 
     public int entrarFila() throws InterruptedException {
         mutex.acquire();

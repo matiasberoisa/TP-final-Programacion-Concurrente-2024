@@ -127,8 +127,11 @@ public class Visitante implements Runnable {
                                 System.out.println(
                                         "el visitante N° " + numVisitante
                                                 + " fue el ultimo del grupo, habilita al resto a entrar");
-                                Thread.sleep(3000);
-                                elParque.habilitarEntrada();
+                                for (int i = 0; i < 4; i++) {
+                                    System.out.println("entra el grupo: " + (i + 1));
+                                    elParque.habilitarEntrada(i);
+                                    Thread.sleep(2000);
+                                }
                             } else {
                                 System.out.println("el visitante N° " + numVisitante + " entra al espectaculo");
                             }
@@ -153,16 +156,16 @@ public class Visitante implements Runnable {
                         }
                         break;
                     case 6: // entra a la realidad virtual
-                        elParque.entrarRealidadVirtual();
+                        elParque.entrarRV();
                         if (elParque.RVAbierto()) {
+                            elParque.entrarRealidadVirtual();
                             System.out.println("el visitante N° " + numVisitante + " quiere entrar a la RV");
                             System.out.println(
                                     "el visitante N° " + numVisitante + " toma los elementos y se mete a la RV");
-                            Thread.sleep(5000);
+                            Thread.sleep(3000);
                             System.out.println(
                                     "el visitante N° " + numVisitante + " devuelve los elementos y se va de la RV");
                             elParque.salirRealidadVirtual();
-                            Thread.sleep(5000);
                         } else {
                             System.out.println(
                                     "cerro la RV. el visitante N° " + numVisitante + " se va");

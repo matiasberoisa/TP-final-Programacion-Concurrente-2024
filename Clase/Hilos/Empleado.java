@@ -32,8 +32,8 @@ public class Empleado implements Runnable {
             }
             if (tipoTrabajo.equals("realidadVirtual")) {
                 while (elParque.tiempoActual() < 23) {
-                    elParque.darEquipo();
                     elParque.esperarEquipo();
+                    elParque.habilitarEquipo();
                 }
             }
             if (tipoTrabajo.equals("manejadorTiempo")) {

@@ -52,7 +52,9 @@ public class Tren {
 
     public void dejarSubir() {
         try {
-            tren.put("");
+            for (int i = 0; i < 10; i++) {
+                tren.put("");
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -60,7 +62,9 @@ public class Tren {
 
     public void dejarBajar() {
         try {
-            salida.put("");
+            for (int i = 0; i < 10; i++) {
+                salida.put("");
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

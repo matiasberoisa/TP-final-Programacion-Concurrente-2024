@@ -115,16 +115,20 @@ public class Parque {
         return realidadVirtual.atraccionAbierta();
     }
 
+    public void entrarRV() {
+        realidadVirtual.entrarFila();
+    }
+
     public void entrarRealidadVirtual() {
         realidadVirtual.tomarEquipo();
     }
 
-    public void salirRealidadVirtual() {
+    public void salirRealidadVirtual() throws InterruptedException {
         realidadVirtual.devolverEquipo();
     }
 
-    public void darEquipo() throws InterruptedException {
-        realidadVirtual.darEquipo();
+    public void habilitarEquipo() throws InterruptedException {
+        realidadVirtual.habilitarEquipo();
     }
 
     public void esperarEquipo() {
@@ -219,8 +223,8 @@ public class Parque {
         elEspectaculo.habilitarSalida();
     }
 
-    public void habilitarEntrada() {
-        elEspectaculo.habilitarEntrada();
+    public void habilitarEntrada(int i) {
+        elEspectaculo.habilitarEntrada(i);
     }
 
     //////////////////// metodos del tiempo ////////////////////
